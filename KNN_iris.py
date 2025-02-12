@@ -1,8 +1,9 @@
+from flask import Flask, request, jsonify
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import numpy as np
 
 # Charger le dataset Iris
 iris = datasets.load_iris()
@@ -21,17 +22,32 @@ k = 5  # Nombre de voisins
 knn = KNeighborsClassifier(n_neighbors=k)
 knn.fit(X_train, y_train)
 
-# Prédiction sur les données test
-y_pred = knn.predict(X_test)
+# Initialisation de Flask
+app = Flask(__name__)
 
-# Évaluation
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Précision du modèle KNN (k={k}): {accuracy:.2f}")
+@app.route('/predict', methods=['GET'])
+def predict():
+    try:
+        # Récupérer les paramètres depuis la requête GET
+        sepal_length = float(request.args.get('sepal_length'))
+        sepal_width = float(request.args.get('sepal_width'))
+        petal_length = float(request.args.get('petal_length'))
+        petal_width = float(request.args.get('petal_width'))
 
-# Rapport de classification
-print("\nRapport de classification:")
-print(classification_report(y_test, y_pred))
+        # Créer un tableau numpy avec les données
+        features = np.array([[sepal_length, sepal_width, petal_length, petal_width]])
 
-# Matrice de confusion
-print("\nMatrice de confusion:")
-print(confusion_matrix(y_test, y_pred))
+        # Normaliser les données
+        features = scaler.transform(features)
+
+        # Faire la prédiction
+        prediction = knn.predict(features)
+        predicted_class = iris.target_names[prediction[0]]
+
+        # Retourner la réponse JSON
+        return jsonify({"prediction": predicted_class})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+if __name__ == '__main__':
+    app.run(debug=True)
