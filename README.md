@@ -25,16 +25,21 @@ Nous avons développé une API commune pour chaque model :
 
 - api_knn.py
 <img src="./img/api_knn.png" alt="API KNN" />
+
 - api_rf.py
 <img src="./img/api_rf.png" alt="API Random Forest" />
+
 - api_lr.py
 <img src="./img/api_lr.png" alt="API Logistic Regression" />
 
 
 
 Nous avons ensuite créé nos comptes ngrok pour les rendre accessibles à tous :
+
 <img src="./img/ngrok_knn.png" alt="KNN" />
+
 <img src="./img/ngrok_rf.png" alt="Random Forest" />
+
 <img src="./img/ngrok_lr.png" alt="Logistic Regression" />
 
 
@@ -64,4 +69,5 @@ Voir les scripts dans **'E-commerce/Simple Hello World Server'**
 ### Exercice - Simple e-commerce
 
 Voir les scripts dans **'E-commerce/Simple e-commerce'**
+
 
